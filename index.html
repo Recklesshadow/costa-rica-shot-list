@@ -529,7 +529,7 @@ document.getElementById('installBtn').addEventListener('click', function() {
     // iOS or no native prompt — show instructions
     var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     if (isIOS) {
-      alert("To add to your home screen:\n\n1. Tap the Share button (square with arrow) at the bottom of Safari\n2. Scroll down and tap \"Add to Home Screen\"\n3. Tap \"Add\"\n\nThe app will appear on your home screen!");
+      alert("To add to your home screen:\n\n1. In Safari, look for the SHARE icon \u2014 it\u2019s a small box with an arrow pointing up out of it. On most iPhones it\u2019s at the TOP of the screen, right next to the web address. (On older iPhones it may be in the bottom toolbar.)\n\n2. Tap that Share icon. A menu slides up.\n\n3. Scroll DOWN through that menu until you see \u201CAdd to Home Screen\u201D and tap it.\n\n4. Tap \u201CAdd\u201D in the top-right corner.\n\nDone! The Shot List icon will appear on your home screen and works offline.");
     } else {
       alert("To add to your home screen:\n\n1. Tap the browser menu (\u22ee or \u2026)\n2. Tap \"Add to Home Screen\" or \"Install App\"\n3. Confirm\n\nThe app will appear on your home screen!");
     }
