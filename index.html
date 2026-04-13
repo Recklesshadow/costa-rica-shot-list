@@ -80,7 +80,7 @@
     text-align: right;
   }
 
-  /* INSTALL BANNER */
+  /* OFFLINE TIP BANNER */
   .install-banner {
     background: linear-gradient(135deg, var(--gold), #D4A017);
     color: white;
@@ -306,13 +306,13 @@
   <div class="progress-text" id="progressText">0 / 38 shots captured</div>
 </div>
 
-<!-- Install / Add to Home Screen Banner -->
+<!-- Offline Tip Banner -->
 <div class="install-banner" id="installBanner">
   <div class="install-banner-text">
-    Add to your home screen for easy access
-    <small>Works offline — no internet needed in the field</small>
+    Keep this tab open — it works without internet
+    <small>Your checkmarks are saved automatically. No signal needed in the field.</small>
   </div>
-  <button class="install-btn" id="installBtn">Install</button>
+  <button class="install-btn" id="installBtn">Got it</button>
   <button class="install-dismiss" id="installDismiss">&times;</button>
 </div>
 
@@ -501,54 +501,30 @@ document.querySelector('.filter-bar').addEventListener('click', function(e) {
 // INSTALL / ADD TO HOME SCREEN
 // ============================================================
 
-// For Android/Chrome — capture the beforeinstallprompt event
-let deferredPrompt = null;
+// ============================================================
+// OFFLINE TIP BANNER — simple, works on any phone/browser
+// ============================================================
+(function() {
+  var banner = document.getElementById('installBanner');
+  var dismissed = false;
+  try { dismissed = !!localStorage.getItem('tipDismissed'); } catch(e) {}
 
-window.addEventListener('beforeinstallprompt', function(e) {
-  e.preventDefault();
-  deferredPrompt = e;
-  showInstallBanner();
-});
-
-function showInstallBanner() {
-  const banner = document.getElementById('installBanner');
-  // Don't show if user already dismissed
-  try { if (localStorage.getItem('installDismissed')) return; } catch(e) {}
-  banner.classList.remove('hidden');
-}
-
-document.getElementById('installBtn').addEventListener('click', function() {
-  if (deferredPrompt) {
-    // Android/Chrome native install
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(function(result) {
-      deferredPrompt = null;
-      document.getElementById('installBanner').classList.add('hidden');
-    });
+  if (dismissed) {
+    banner.classList.add('hidden');
   } else {
-    // iOS or no native prompt — show instructions
-    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    if (isIOS) {
-      alert("To add to your home screen:\n\n1. In Safari, look for the SHARE icon \u2014 it\u2019s a small box with an arrow pointing up out of it. On most iPhones it\u2019s at the TOP of the screen, right next to the web address. (On older iPhones it may be in the bottom toolbar.)\n\n2. Tap that Share icon. A menu slides up.\n\n3. Scroll DOWN through that menu until you see \u201CAdd to Home Screen\u201D and tap it.\n\n4. Tap \u201CAdd\u201D in the top-right corner.\n\nDone! The Shot List icon will appear on your home screen and works offline.");
-    } else {
-      alert("To add to your home screen:\n\n1. Tap the browser menu (\u22ee or \u2026)\n2. Tap \"Add to Home Screen\" or \"Install App\"\n3. Confirm\n\nThe app will appear on your home screen!");
-    }
+    banner.classList.remove('hidden');
   }
-});
 
-document.getElementById('installDismiss').addEventListener('click', function() {
-  document.getElementById('installBanner').classList.add('hidden');
-  try { localStorage.setItem('installDismissed', 'true'); } catch(e) {}
-});
+  document.getElementById('installBtn').addEventListener('click', function() {
+    banner.classList.add('hidden');
+    try { localStorage.setItem('tipDismissed', 'true'); } catch(e) {}
+  });
 
-// On iOS, show the install banner since there's no beforeinstallprompt
-// Check if NOT already installed as standalone
-if (window.navigator.standalone !== true && !window.matchMedia('(display-mode: standalone)').matches) {
-  // Show after a short delay so the page loads first
-  setTimeout(function() {
-    if (!deferredPrompt) { showInstallBanner(); }
-  }, 1500);
-}
+  document.getElementById('installDismiss').addEventListener('click', function() {
+    banner.classList.add('hidden');
+    try { localStorage.setItem('tipDismissed', 'true'); } catch(e) {}
+  });
+})();
 
 // ============================================================
 // SERVICE WORKER — enables offline use + installability
