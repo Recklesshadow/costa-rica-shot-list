@@ -1,0 +1,18 @@
+{
+  "name": "Benito Shot List — Costa Rica April 2026",
+  "short_name": "Shot List",
+  "description": "Photographer shot list for Costa Rica Adventure trip",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#145F54",
+  "theme_color": "#145F54",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iIzE0NUY1NCIvPjx0ZXh0IHg9IjI1NiIgeT0iMzAwIiBmb250LWZhbWlseT0iSGVsdmV0aWNhLEFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI0M4OTYyRSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+TuDwvdGV4dD48L3N2Zz4=",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

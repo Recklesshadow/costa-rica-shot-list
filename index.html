@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Shot List">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#145F54">
+<meta name="description" content="Photographer shot list for Costa Rica Adventure, April 2026">
+<link rel="manifest" href="manifest.json">
+<!-- Apple touch icon as inline SVG data URI -->
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjM2IiBmaWxsPSIjMTQ1RjU0Ii8+PHRleHQgeD0iOTAiIHk9IjEwNSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjcwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI0M4OTYyRSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+TuDwvdGV4dD48L3N2Zz4=">
+<title>Shot List — Costa Rica April 2026</title>
+<style>
+  :root {
+    --teal: #1A7A6D;
+    --teal-dark: #145F54;
+    --teal-light: #D4ECE8;
+    --gold: #C8962E;
+    --gold-light: #FEF3CD;
+    --white: #FFFFFF;
+    --offwhite: #F8F9FA;
+    --dark: #2D2D2D;
+    --gray: #666666;
+    --light-gray: #E9ECEF;
+    --must: #D4A017;
+    --nice: #6C757D;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--offwhite);
+    color: var(--dark);
+    -webkit-text-size-adjust: 100%;
+    padding-bottom: 80px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--teal-dark);
+    color: white;
+    padding: 16px 16px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+  .header .subtitle { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--teal-dark);
+    padding: 0 16px 14px;
+    position: sticky;
+    top: 62px;
+    z-index: 99;
+  }
+  .progress-bar-bg {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: var(--gold);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+  .progress-text {
+    color: rgba(255,255,255,0.85);
+    font-size: 11px;
+    margin-top: 4px;
+    text-align: right;
+  }
+
+  /* INSTALL BANNER */
+  .install-banner {
+    background: linear-gradient(135deg, var(--gold), #D4A017);
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .install-banner.hidden { display: none; }
+  .install-banner-text { flex: 1; line-height: 1.3; }
+  .install-banner-text small { display: block; font-weight: 400; font-size: 11px; opacity: 0.9; margin-top: 2px; }
+  .install-btn {
+    background: white;
+    color: var(--teal-dark);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .install-dismiss {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.8);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+  }
+
+  /* FILTER TABS */
+  .filter-bar {
+    display: flex;
+    gap: 6px;
+    padding: 10px 16px;
+    overflow-x: auto;
+    background: white;
+    border-bottom: 1px solid var(--light-gray);
+    position: sticky;
+    top: 84px;
+    z-index: 98;
+  }
+  .filter-btn {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--light-gray);
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn.active {
+    background: var(--teal);
+    color: white;
+    border-color: var(--teal);
+  }
+
+  /* DAY SECTIONS */
+  .day-section { margin: 12px 12px 0; }
+  .day-header {
+    background: var(--teal);
+    color: white;
+    padding: 12px 14px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .day-header h2 { font-size: 15px; font-weight: 700; }
+  .day-header .day-count {
+    font-size: 11px;
+    background: rgba(255,255,255,0.2);
+    padding: 2px 10px;
+    border-radius: 12px;
+  }
+  .day-header .chevron {
+    font-size: 18px;
+    transition: transform 0.2s;
+    margin-left: 8px;
+  }
+  .day-header.collapsed .chevron { transform: rotate(-90deg); }
+  .day-body {
+    background: white;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  .day-body.hidden { display: none; }
+
+  /* SHOT CARDS */
+  .shot-card {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--light-gray);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: background 0.2s;
+  }
+  .shot-card:last-child { border-bottom: none; }
+  .shot-card.checked { background: #F0FFF4; opacity: 0.7; }
+  .shot-card.checked .shot-desc { text-decoration: line-through; color: var(--gray); }
+
+  .shot-check {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2.5px solid var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: 2px;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .shot-check.done {
+    background: var(--teal);
+    border-color: var(--teal);
+  }
+  .shot-check.done::after {
+    content: "\2713";
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .shot-content { flex: 1; min-width: 0; }
+  .shot-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+  .shot-time {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .shot-priority {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .shot-priority.must {
+    background: var(--gold-light);
+    color: var(--must);
+  }
+  .shot-priority.nice {
+    background: var(--light-gray);
+    color: var(--nice);
+  }
+  .shot-agenda {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+  .shot-desc {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.4;
+  }
+  .shot-notes {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 600;
+    margin-top: 5px;
+    line-height: 1.3;
+  }
+  .shot-promo {
+    font-size: 10px;
+    color: var(--gray);
+    margin-top: 3px;
+  }
+
+  /* BOTTOM STATS */
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--teal-dark);
+    color: white;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 100;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+  }
+  .bottom-stat span { font-size: 18px; display: block; text-align: center; }
+
+  /* Hide cards when filtered */
+  .shot-card.filter-hidden { display: none; }
+  .day-section.filter-hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>SHOT LIST — COSTA RICA</h1>
+  <div class="subtitle">Benito Como &bull; April 14-17, 2026 &bull; Playa Hermosa</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0 / 38 shots captured</div>
+</div>
+
+<!-- Install / Add to Home Screen Banner -->
+<div class="install-banner" id="installBanner">
+  <div class="install-banner-text">
+    Add to your home screen for easy access
+    <small>Works offline — no internet needed in the field</small>
+  </div>
+  <button class="install-btn" id="installBtn">Install</button>
+  <button class="install-dismiss" id="installDismiss">&times;</button>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-btn active" data-filter="all">All</div>
+  <div class="filter-btn" data-filter="tue">Tue</div>
+  <div class="filter-btn" data-filter="wed">Wed</div>
+  <div class="filter-btn" data-filter="thu">Thu</div>
+  <div class="filter-btn" data-filter="fri">Fri</div>
+  <div class="filter-btn" data-filter="any">Anytime</div>
+  <div class="filter-btn" data-filter="must">Must Have</div>
+</div>
+
+<div id="shotList"></div>
+
+<div class="bottom-bar">
+  <div class="bottom-stat"><span id="statDone">0</span>Done</div>
+  <div class="bottom-stat"><span id="statMust">0</span>Must Have Left</div>
+  <div class="bottom-stat"><span id="statTotal">38</span>Total</div>
+</div>
+
+<script>
+const SHOTS = [
+  // TUESDAY
+  { id:1, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"Early PM", agenda:"Airport Pickup", desc:"Guests exiting SJO terminal, greeting team, loading luggage into van.", priority:"must", notes:"Capture genuine excitement on faces. Get van visible.", promo:"Both" },
+  { id:2, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"Early PM", agenda:"Van Ride to Beach", desc:"Group in van with cold beers and sandwiches. Road trip through Costa Rican landscape \u2014 mountains, greenery.", priority:"must", notes:"Shoot through van windows for landscape. Candid laughs.", promo:"Both" },
+  { id:3, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"~4:00 PM", agenda:"House Reveal", desc:"Wide reveal of Casa Mia & Casa Mar. Guests reacting to property. First look at ocean.", priority:"must", notes:"KEY SHOT \u2014 this is the 'reveal' moment. Multiple angles!", promo:"Both" },
+  { id:4, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"~4:00 PM", agenda:"House Tour", desc:"Walkthroughs \u2014 pools, ocean views, bedrooms, patios. Someone stepping onto patio overlooking beach.", priority:"must", notes:"Shoot empty rooms first (beauty shots), then with people.", promo:"Both" },
+  { id:5, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"5:00 PM", agenda:"Welcome Drinks", desc:"Bartender making cocktails. Group gathering with drinks. Clinking glasses. Casual laughter.", priority:"must", notes:"Golden hour starting. Wide + close-up cocktails.", promo:"Both" },
+  { id:6, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"5:20 PM", agenda:"Beach Sunset Walk", desc:"Group walking to beach. Feet in sand. Sunset over Pacific. Waves on black sand.", priority:"must", notes:"CRITICAL \u2014 black sand + sunset featured heavily in both promos.", promo:"Both" },
+  { id:7, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"6:00 PM", agenda:"Ketra Light Demo", desc:"Lights transitioning warm candlelight to bright daylight. Close-ups of light on surfaces/faces. Guest reactions leaning in.", priority:"must", notes:"MONEY SHOT. Light transition demo is the centerpiece of both promos.", promo:"Both" },
+  { id:8, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"6:00 PM", agenda:"Appetizers", desc:"Patacones and guacamole being served during presentation.", priority:"nice", notes:"Quick B-roll during presentation.", promo:"Both" },
+  { id:9, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"~6:45 PM", agenda:"Steak & Lobster Dinner", desc:"Chef plating filet mignon and lobster. Close-up lobster in butter. Full plated dish. Group at table. First bites.", priority:"must", notes:"Food photography CRITICAL. Overhead, close-up plating, chef in action, candid dining.", promo:"Both" },
+  { id:10, day:"tue", dayLabel:"Tuesday, April 14 \u2014 Arrival", time:"Evening", agenda:"Post-Dinner Socializing", desc:"Candid moments \u2014 dealers and builders talking, laughing, shaking hands. Relaxed evening by pool/patio.", priority:"must", notes:"Dealer promo emphasizes relationship building.", promo:"Dealer" },
+
+  // WEDNESDAY
+  { id:11, day:"wed", dayLabel:"Wednesday, April 15 \u2014 Zip-Lining", time:"8:00 AM", agenda:"Breakfast \u2014 Huevos Rancheros", desc:"Full breakfast spread \u2014 eggs, tortillas, salsa, beans, avocado, fruit, juice, sausage, coffee.", priority:"must", notes:"Both promos: 'traditional Costa Rican breakfast every morning.'", promo:"Both" },
+  { id:12, day:"wed", dayLabel:"Wednesday, April 15 \u2014 Zip-Lining", time:"10:00 AM", agenda:"Depart for Zip-Lining", desc:"Group loading van, excitement and energy. Arrival at Vista Los Sue\u00f1os.", priority:"must", notes:"Transition shot \u2014 adventure beginning.", promo:"Both" },
+  { id:13, day:"wed", dayLabel:"Wednesday, April 15 \u2014 Zip-Lining", time:"10 AM\u20131 PM", agenda:"ZIP-LINING ACTION", desc:"POV through canopy. Guests on platforms. Action shots mid-flight. Reactions at landings. Group photos in harnesses.", priority:"must", notes:"BOTH promos call for 'zip line POV through canopy.' Use GoPro + stills. Capture height/scale.", promo:"Both" },
+  { id:14, day:"wed", dayLabel:"Wednesday, April 15 \u2014 Zip-Lining", time:"~1:00 PM", agenda:"Pool & Beach Free Time", desc:"Pool time \u2014 swimming, lounging. Beach relaxation. Ocean views from houses.", priority:"nice", notes:"Relaxation B-roll. Luxury/lifestyle element.", promo:"Both" },
+  { id:15, day:"wed", dayLabel:"Wednesday, April 15 \u2014 Zip-Lining", time:"5:00 PM", agenda:"Sunset Cocktails", desc:"Cocktails at sunset \u2014 glasses with ocean backdrop. Group sharing stories.", priority:"must", notes:"Iconic cocktail-with-sunset shot.", promo:"Both" },
+  { id:16, day:"wed", dayLabel:"Wednesday, April 15 \u2014 Zip-Lining", time:"7:00 PM", agenda:"Fixture Lineup Presentation", desc:"Presenter with Ketra, Rania, Lumaris demos. Engaged audience. Builders watching, asking questions.", priority:"must", notes:"Night 2 fixture lineup. Product close-ups AND audience engagement.", promo:"Both" },
+  { id:17, day:"wed", dayLabel:"Wednesday, April 15 \u2014 Zip-Lining", time:"7:00 PM", agenda:"Appetizers", desc:"Octopus poke, ceviche, tostadas, patacones close-ups.", priority:"nice", notes:"B-roll food during presentation.", promo:"Both" },
+  { id:18, day:"wed", dayLabel:"Wednesday, April 15 \u2014 Zip-Lining", time:"7:45 PM", agenda:"Paella Night Dinner", desc:"Chef preparing paella \u2014 cooking action. Close-ups of lobster, mussels, shrimp, octopus. Served. Passion fruit pie.", priority:"must", notes:"Get the PROCESS (chef cooking) and finished product.", promo:"Both" },
+
+  // THURSDAY
+  { id:19, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"7:15 AM", agenda:"Breakfast \u2014 Gallo Pinto", desc:"Gallo pinto spread with plantains, eggs, sausage, cheese, natilla, fruit, bacon, coffee.", priority:"must", notes:"Gallo pinto specifically named in Builder promo. Hero shot.", promo:"Both" },
+  { id:20, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"8:15 AM", agenda:"Van Departs for ATV", desc:"Group loading up. Energy and excitement. ATV-appropriate clothing.", priority:"nice", notes:"Quick transition shot.", promo:"Both" },
+  { id:21, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"9 AM\u20134 PM", agenda:"ATV TRAILS \u2014 MOUNTAINS", desc:"ATVs on mountain trails \u2014 wide formation shots. Individual action shots. Dust flying. Mountain vistas.", priority:"must", notes:"HEAVILY FEATURED. Wide landscape + tight action. Use GoPro mounts on your ATV.", promo:"Both" },
+  { id:22, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"During ATV", agenda:"Small Mountain Towns", desc:"ATVs through villages. Local farms. Mango groves. Local life \u2014 farmers, animals, small shops.", priority:"must", notes:"'Cultural experience' is key selling point. Authentic moments.", promo:"Both" },
+  { id:23, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"During ATV", agenda:"Private Waterfalls", desc:"Group at waterfalls. Wide waterfall shots. Guests near/under falls.", priority:"must", notes:"PRIVATE waterfalls \u2014 make them look exclusive and stunning.", promo:"Both" },
+  { id:24, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"During ATV", agenda:"Moonshine Stop", desc:"Group trying local moonshine. Reactions and laughing. Guide explaining.", priority:"must", notes:"Fun candid moment. Specifically mentioned in both scripts.", promo:"Both" },
+  { id:25, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"During ATV", agenda:"Mountain Bar Lunch", desc:"Traditional lunch \u2014 casado, chifrijo, patacones. Group eating. Rustic setting with mountain views.", priority:"must", notes:"Both promos name these dishes. Close-ups AND group shots.", promo:"Both" },
+  { id:26, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"~4:15 PM", agenda:"Return \u2014 Post-ATV", desc:"Group arriving back tired but happy. Muddy clothes. Jumping in pool.", priority:"nice", notes:"Post-adventure glow. Real smiles, real moments.", promo:"Both" },
+  { id:27, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"5:00 PM", agenda:"Post-ATV Cocktails", desc:"Cocktails sharing ATV stories. Sunset backdrop.", priority:"must", notes:"Another sunset cocktail opportunity. Different angle from Wed.", promo:"Both" },
+  { id:28, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"6:30 PM", agenda:"Pricing & Wiring Presentation", desc:"Presenter with wiring diagrams. Builders taking notes. Side-by-side comparisons. Engaged discussion.", priority:"must", notes:"'Numbers night.' Get materials AND 'builder taking notes.'", promo:"Both" },
+  { id:29, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"6:30 PM", agenda:"Appetizers \u2014 Sashimi", desc:"Sashimi, dumplings, sauces close-ups.", priority:"nice", notes:"Pre-sushi appetizers.", promo:"Both" },
+  { id:30, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"7:15 PM", agenda:"SUSHI NIGHT", desc:"Chef making rolls by hand. Tico Roll close-up. Sushi boats on table. Full spread. Fresh tuna. Group reactions.", priority:"must", notes:"#1 FOOD MOMENT. Builder guide says 'lean into sushi night visuals.' Multiple angles!", promo:"Both" },
+  { id:31, day:"thu", dayLabel:"Thursday, April 16 \u2014 ATV Day", time:"~8:15 PM", agenda:"BEACH BONFIRE", desc:"Fire on beach. Group around bonfire with drinks. Silhouettes against fire/ocean. Music. Stars.", priority:"must", notes:"Powerful closing montage shot. Fire + beach + group = iconic. Multiple distances.", promo:"Both" },
+
+  // FRIDAY
+  { id:32, day:"fri", dayLabel:"Friday, April 17 \u2014 Departure", time:"8:30 AM", agenda:"Final Breakfast \u2014 Burritos", desc:"Burrito spread, fruit, OJ, coffee. Last meal together.", priority:"nice", notes:"Last breakfast \u2014 capture the camaraderie.", promo:"Both" },
+  { id:33, day:"fri", dayLabel:"Friday, April 17 \u2014 Departure", time:"9:00 AM", agenda:"GROUP PHOTO & Goodbyes", desc:"POSED group photo with ocean behind. Candid goodbyes \u2014 hugs, handshakes. Last look at ocean.", priority:"must", notes:"Group photo in BOTH closing montages. Stage it well!", promo:"Both" },
+
+  // ANYTIME
+  { id:34, day:"any", dayLabel:"Anytime \u2014 Throughout Trip", time:"Any quiet moment", agenda:"Ketra Lighting in Houses", desc:"Rooms at different settings. Color-changing sequences. Light on surfaces. Warm vs. daylight comparison.", priority:"must", notes:"Shoot when houses empty. Product demo footage is critical.", promo:"Both" },
+  { id:35, day:"any", dayLabel:"Anytime \u2014 Throughout Trip", time:"Anytime", agenda:"Coastal Source Audio", desc:"Outdoor speakers in landscaping. Sound system in garden/beach.", priority:"nice", notes:"Not in current promos but useful for future content.", promo:"N/A" },
+  { id:36, day:"any", dayLabel:"Anytime \u2014 Throughout Trip", time:"Various times of day", agenda:"Property Beauty Shots", desc:"Both houses at sunrise, golden hour, blue hour. Pool reflections. Garden. Ocean vantage points.", priority:"must", notes:"Establishing shots throughout both promos. Shoot at different times.", promo:"Both" },
+  { id:37, day:"any", dayLabel:"Anytime \u2014 Throughout Trip", time:"Throughout", agenda:"Relationship Moments", desc:"Candid dealer-builder conversations. Walking beach. Handshakes. Genuine laughter.", priority:"must", notes:"Core Dealer promo message. These sell the trip.", promo:"Dealer" },
+  { id:38, day:"any", dayLabel:"Anytime \u2014 Throughout Trip", time:"Throughout", agenda:"Costa Rica B-Roll", desc:"Tropical flora. Wildlife (monkeys, birds). Ocean waves. Palm trees. Colorful local details.", priority:"nice", notes:"Fill transitions and montages.", promo:"Both" }
+];
+
+// State — use localStorage to persist checkbox state
+let checked = {};
+try { checked = JSON.parse(localStorage.getItem('shotChecked') || '{}'); } catch(e) { checked = {}; }
+
+function saveState() {
+  try { localStorage.setItem('shotChecked', JSON.stringify(checked)); } catch(e) {}
+}
+
+function updateProgress() {
+  const done = Object.keys(checked).length;
+  const mustLeft = SHOTS.filter(s => s.priority === 'must' && !checked[s.id]).length;
+  document.getElementById('progressFill').style.width = ((done / SHOTS.length) * 100) + '%';
+  document.getElementById('progressText').textContent = done + ' / ' + SHOTS.length + ' shots captured';
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statMust').textContent = mustLeft;
+  document.getElementById('statTotal').textContent = SHOTS.length;
+}
+
+function render() {
+  const container = document.getElementById('shotList');
+  container.innerHTML = '';
+  const days = [];
+  const dayMap = {};
+  SHOTS.forEach(s => {
+    if (!dayMap[s.dayLabel]) { dayMap[s.dayLabel] = []; days.push(s.dayLabel); }
+    dayMap[s.dayLabel].push(s);
+  });
+
+  days.forEach(dayLabel => {
+    const shots = dayMap[dayLabel];
+    const dayKey = shots[0].day;
+    const mustCount = shots.filter(s => s.priority === 'must').length;
+    const doneCount = shots.filter(s => checked[s.id]).length;
+
+    const section = document.createElement('div');
+    section.className = 'day-section';
+    section.dataset.day = dayKey;
+
+    const header = document.createElement('div');
+    header.className = 'day-header';
+    header.innerHTML = '<div><h2>' + dayLabel + '</h2></div><div><span class="day-count">' + doneCount + '/' + shots.length + ' (' + mustCount + ' must)</span><span class="chevron">&#x25BC;</span></div>';
+
+    const body = document.createElement('div');
+    body.className = 'day-body';
+
+    header.addEventListener('click', function() {
+      header.classList.toggle('collapsed');
+      body.classList.toggle('hidden');
+    });
+
+    shots.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'shot-card' + (checked[s.id] ? ' checked' : '');
+      card.dataset.day = s.day;
+      card.dataset.priority = s.priority;
+
+      const check = document.createElement('div');
+      check.className = 'shot-check' + (checked[s.id] ? ' done' : '');
+      check.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (checked[s.id]) { delete checked[s.id]; }
+        else { checked[s.id] = true; }
+        saveState();
+        check.classList.toggle('done');
+        card.classList.toggle('checked');
+        updateProgress();
+        const dc = shots.filter(x => checked[x.id]).length;
+        header.querySelector('.day-count').textContent = dc + '/' + shots.length + ' (' + mustCount + ' must)';
+      });
+
+      const content = document.createElement('div');
+      content.className = 'shot-content';
+      content.innerHTML =
+        '<div class="shot-top"><span class="shot-time">' + s.time + '</span><span class="shot-priority ' + s.priority + '">' + (s.priority === 'must' ? 'Must Have' : 'Nice to Have') + '</span></div>' +
+        '<div class="shot-agenda">' + s.agenda + '</div>' +
+        '<div class="shot-desc">' + s.desc + '</div>' +
+        (s.notes ? '<div class="shot-notes">' + s.notes + '</div>' : '') +
+        '<div class="shot-promo">Used in: ' + s.promo + '</div>';
+
+      card.appendChild(check);
+      card.appendChild(content);
+      body.appendChild(card);
+    });
+
+    section.appendChild(header);
+    section.appendChild(body);
+    container.appendChild(section);
+  });
+
+  updateProgress();
+}
+
+// FILTERING
+document.querySelector('.filter-bar').addEventListener('click', function(e) {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filter = btn.dataset.filter;
+
+  document.querySelectorAll('.day-section').forEach(sec => {
+    if (filter === 'all' || filter === 'must') { sec.classList.remove('filter-hidden'); }
+    else { sec.classList.toggle('filter-hidden', sec.dataset.day !== filter); }
+  });
+
+  document.querySelectorAll('.shot-card').forEach(card => {
+    if (filter === 'all') { card.classList.remove('filter-hidden'); }
+    else if (filter === 'must') { card.classList.toggle('filter-hidden', card.dataset.priority !== 'must'); }
+    else { card.classList.remove('filter-hidden'); }
+  });
+});
+
+// ============================================================
+// INSTALL / ADD TO HOME SCREEN
+// ============================================================
+
+// For Android/Chrome — capture the beforeinstallprompt event
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallBanner();
+});
+
+function showInstallBanner() {
+  const banner = document.getElementById('installBanner');
+  // Don't show if user already dismissed
+  try { if (localStorage.getItem('installDismissed')) return; } catch(e) {}
+  banner.classList.remove('hidden');
+}
+
+document.getElementById('installBtn').addEventListener('click', function() {
+  if (deferredPrompt) {
+    // Android/Chrome native install
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(result) {
+      deferredPrompt = null;
+      document.getElementById('installBanner').classList.add('hidden');
+    });
+  } else {
+    // iOS or no native prompt — show instructions
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    if (isIOS) {
+      alert("To add to your home screen:\n\n1. Tap the Share button (square with arrow) at the bottom of Safari\n2. Scroll down and tap \"Add to Home Screen\"\n3. Tap \"Add\"\n\nThe app will appear on your home screen!");
+    } else {
+      alert("To add to your home screen:\n\n1. Tap the browser menu (\u22ee or \u2026)\n2. Tap \"Add to Home Screen\" or \"Install App\"\n3. Confirm\n\nThe app will appear on your home screen!");
+    }
+  }
+});
+
+document.getElementById('installDismiss').addEventListener('click', function() {
+  document.getElementById('installBanner').classList.add('hidden');
+  try { localStorage.setItem('installDismissed', 'true'); } catch(e) {}
+});
+
+// On iOS, show the install banner since there's no beforeinstallprompt
+// Check if NOT already installed as standalone
+if (window.navigator.standalone !== true && !window.matchMedia('(display-mode: standalone)').matches) {
+  // Show after a short delay so the page loads first
+  setTimeout(function() {
+    if (!deferredPrompt) { showInstallBanner(); }
+  }, 1500);
+}
+
+// ============================================================
+// SERVICE WORKER — enables offline use + installability
+// ============================================================
+if ('serviceWorker' in navigator) {
+  // Register an inline service worker using a blob URL
+  const swCode = `
+    const CACHE_NAME = 'shot-list-v1';
+    self.addEventListener('install', function(e) {
+      e.waitUntil(
+        caches.open(CACHE_NAME).then(function(cache) {
+          return cache.addAll(['./', './index.html']);
+        }).catch(function() { /* ignore cache errors */ })
+      );
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', function(e) {
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', function(e) {
+      e.respondWith(
+        caches.match(e.request).then(function(r) {
+          return r || fetch(e.request);
+        }).catch(function() {
+          return caches.match('./');
+        })
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(function() {
+    // Service worker registration may fail on some browsers — that's OK
+  });
+}
+
+render();
+</script>
+</body>
+</html>
